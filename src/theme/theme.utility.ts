@@ -1,0 +1,32 @@
+export enum COLORS {
+    PRIMARY_BLUE = "#2F80ED",
+    SECONDARY = "#4F4F4F",
+    NEUTRAL = "#828282",
+    SLATE = "#E0E0E0"
+}
+
+export enum INDICATORS {
+    ORANGE = "#F8B76B",
+    PURPLE = "#8785FF",
+    RED = "#EB5757",
+    YELLOW = "#F2C94C"
+}
+
+export enum CHATS_COLORS {
+    ORANGE_SLATE = "#FCEED3",
+    ORANGE_PRIMARY = "#E5A443",
+    PURPLE_SLATE = "#EEDCFF",
+    PURPLE_PRIMARY = "#9B51E0",
+    GREEN_SLATE = "#D2F2EA",
+    GREEN_PRIMARY = "#43B78D"
+}
+
+export enum STICKERS_COLORS {
+    NEUTRAL = "#E9F3FF",
+    ORANGE = "#FDCFA4",
+    ORANGE_SLATE = "#F9E9C3",
+    GREEN = "#AFEBDB",
+    GREEN_MINTH = "#CBF1C2",
+    PURPLE = "#CFCEF9",
+    PINK = "#F9E0FD"
+}
