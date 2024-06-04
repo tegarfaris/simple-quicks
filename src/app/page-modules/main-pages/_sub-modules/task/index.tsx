@@ -9,7 +9,7 @@ const TaskSection = () => {
 
   return (
     <FormProvider {...methods}>
-      <PopupQuicks>
+      <PopupQuicks onCloseDetail={() => false}>
         <Text>Task Section</Text>
       </PopupQuicks>
     </FormProvider>

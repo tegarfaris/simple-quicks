@@ -10,26 +10,39 @@ import InboxList from "./_screens/inbox-list";
 const InboxSection = () => {
   const methods = useForm({});
   const isPending = false;
+  const [selectedMessageId, setSelectedMessageId] = React.useState<
+    number | null
+  >(null);
+
+  const openInbox = (id: number) => {
+    setSelectedMessageId(id);
+  };
+
+  const closeInbox = () => {
+    setSelectedMessageId(null);
+  };
 
   const renderContent = () => {
     if (isPending) {
       return <SectionLoader />;
     } else {
-      return <InboxList />;
+      return (
+        <InboxList
+          selectedMessageId={selectedMessageId}
+          openInbox={openInbox}
+          closeInbox={closeInbox}
+        />
+      );
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <PopupQuicks>
-        <InputField
-          id="search"
-          name="search"
-          placeholder="Search"
-          required
-          type="text"
-          rightElement={<Image src="/assets/icons/search_black.svg" w="20px" />}
-        />
+      <PopupQuicks
+        header={selectedMessageId !== null}
+        footer={selectedMessageId !== null}
+        onCloseDetail={closeInbox}
+      >
         {renderContent()}
       </PopupQuicks>
     </FormProvider>
