@@ -13,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useFormContext } from "react-hook-form";
+import { COLORS } from "@simple-quicks/theme/theme.utility";
 
 interface InputFieldProps {
   id: string;
@@ -48,7 +49,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
         <FormLabel htmlFor={props.id}>
           {props.label}{" "}
           {props.required && (
-            <Text color="wool-danger.500" fontWeight="600" as="span">
+            <Text color={COLORS.RED} fontWeight="600" as="span">
               *
             </Text>
           )}
@@ -64,12 +65,14 @@ const InputField: React.FC<InputFieldProps> = (props) => {
           id={props.id}
           value={props.value}
           placeholder={props.placeholder}
-          bg="wool-light"
-          borderRadius="12px"
+          bg="white"
+          border="1px solid"
+          borderRadius="5px"
           min={props.min}
           max={props.max}
           type={props.type}
           isDisabled={props.isDisabled}
+          pl="58.82px"
           {...register(props.id, {
             required: {
               value: !!props.required,
@@ -87,7 +90,9 @@ const InputField: React.FC<InputFieldProps> = (props) => {
           })}
         />
         {props.rightElement && (
-          <InputRightElement>{props.rightElement}</InputRightElement>
+          <InputRightElement mr="58.82px">
+            {props.rightElement}
+          </InputRightElement>
         )}
         {props.rightAddon && (
           <InputRightAddon>{props.rightAddon}</InputRightAddon>
