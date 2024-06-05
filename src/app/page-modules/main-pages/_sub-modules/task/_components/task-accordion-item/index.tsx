@@ -13,6 +13,7 @@ import {
   MenuItem,
   MenuList,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import InputField from "@simple-quicks/app/components/input/input-field";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
@@ -20,7 +21,26 @@ import React from "react";
 
 const TaskAccordionItem: React.FC = () => {
   const [checked, setChecked] = React.useState(false);
-  
+  const [editDesc, setEditDesc] = React.useState(false);
+  const description =
+    "Closing off this case since this application has been cancelled. No one really understand how this case could possibly be cancelled. The options and the documents within this document were totally a guaranteed for a success!";
+  const [editValue, setEditValue] = React.useState(description);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  React.useEffect(() => {
+    if (editDesc && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [editDesc]);
+
+  const handleEdit = () => {
+    setEditDesc(true);
+  };
+
+  const handleSave = () => {
+    setEditDesc(false);
+  };
+
   return (
     <Flex flexDir="column">
       <Accordion defaultIndex={[0]} allowMultiple w="full">
@@ -105,14 +125,31 @@ const TaskAccordionItem: React.FC = () => {
                 w="20px"
                 h="20px"
                 alt="pencil-icons"
+                cursor="pointer"
+                onClick={() => handleEdit()}
               />
 
-              <Text fontFamily="lato" fontSize="14px" color={COLORS.SECONDARY}>
-                Closing off this case since this application has been cancelled.
-                No one really understand how this case could possibly be
-                cancelled. The options and the documents within this document
-                were totally a guaranteed for a success!
-              </Text>
+              {editDesc ? (
+                <Textarea
+                  ref={textareaRef}
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleSave();
+                    }
+                  }}
+                />
+              ) : (
+                <Text
+                  fontFamily="lato"
+                  fontSize="14px"
+                  color={COLORS.SECONDARY}
+                >
+                  {editValue ? editValue : editDesc}
+                </Text>
+              )}
             </Flex>
           </AccordionPanel>
         </AccordionItem>
