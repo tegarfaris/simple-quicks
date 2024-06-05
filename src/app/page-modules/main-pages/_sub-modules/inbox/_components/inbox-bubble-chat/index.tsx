@@ -7,10 +7,12 @@ import {
   MenuItem,
   MenuList,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 import { renderChatColor } from "@simple-quicks/app/helper/render-chat-color.helper";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
-import React from "react";
+import React, { useState } from "react";
 
 interface InboxBubbleChatProps {
   senderRole: string;
@@ -18,12 +20,38 @@ interface InboxBubbleChatProps {
   bodyMessage: string;
   time: string;
 }
+
 const InboxBubbleChat: React.FC<InboxBubbleChatProps> = ({
   senderName,
   senderRole,
   bodyMessage,
   time,
 }) => {
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editedMessage, setEditedMessage] = useState(bodyMessage);
+
+  React.useEffect(() => {
+    if (editMode && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [editMode]);
+
+  const handleEdit = () => {
+    setEditMode(true);
+  };
+
+  const handleSave = () => {
+    // Implement save logic here
+    // Simpan editedMessage ke server misalnya
+    setEditMode(false);
+  };
+
+  const handleDelete = () => {
+    // Implement delete logic here
+    // Hapus chat
+  };
+
   return (
     <Flex
       w="full"
@@ -55,16 +83,38 @@ const InboxBubbleChat: React.FC<InboxBubbleChatProps> = ({
           bg={renderChatColor(senderRole).bgColor}
           maxW="518px"
         >
-          <Text>{bodyMessage}</Text>
+          {editMode ? (
+            <Textarea
+              ref={textareaRef}
+              value={editedMessage}
+              onChange={(e) => setEditedMessage(e.target.value)}
+              style={{ display: editMode ? "block" : "none" }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSave();
+                }
+              }}
+            />
+          ) : (
+            <Text>{editedMessage}</Text>
+          )}
           <Text>{time}</Text>
         </Box>
         <Menu>
           <MenuButton>
-            <Image src="/assets/icons/triple_dots.svg" w="16px" />
+            <Image src={ICONS.TRIPLE_DOTS} w="16px" alt="actions" />
           </MenuButton>
           <MenuList>
-            <MenuItem color={COLORS.PRIMARY_BLUE}>Edit</MenuItem>
-            <MenuItem color={COLORS.RED}>Delete</MenuItem>
+            <MenuItem
+              color={COLORS.PRIMARY_BLUE}
+              onClick={editMode ? handleSave : handleEdit}
+            >
+              {editMode ? "Save" : "Edit"}
+            </MenuItem>
+            <MenuItem color={COLORS.RED} onClick={handleDelete}>
+              Delete
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>

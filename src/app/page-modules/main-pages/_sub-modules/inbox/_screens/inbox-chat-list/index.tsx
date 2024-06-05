@@ -78,7 +78,7 @@ const InboxChatList: React.FC = () => {
   let hasNewDivider = false;
 
   return (
-    <Flex w="full" mt="80.38px" flexDir="column" gap="33.34px">
+    <Flex w="full" flexDir="column" gap="33.34px">
       {DATA_BUBBLE.map((chat, index) => {
         const isTodayChat = chat.date === todayDate;
 

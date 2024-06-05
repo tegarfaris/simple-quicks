@@ -5,6 +5,7 @@ import InboxDetail from "../inbox-detail";
 import { BORDER, COLORS } from "@simple-quicks/theme/theme.utility";
 import InputField from "@simple-quicks/app/components/input/input-field";
 import PopupQuicks from "@simple-quicks/app/page-modules/main-pages/_components/pop-up";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const DATA_MESSAGE = [
   {
@@ -54,7 +55,8 @@ const InboxList: React.FC<InboxListProps> = ({
           placeholder="Search"
           required
           type="text"
-          rightElement={<Image src="/assets/icons/search_black.svg" w="20px" />}
+          rightElement={<Image src={ICONS.SEARCH_BLACK} w="20px" alt="search-icons" />}
+          pl="58.82px"
         />
       </Box>
       <Flex

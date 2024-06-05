@@ -1,17 +1,18 @@
 import React from "react";
 import { Text } from "@chakra-ui/react";
 
-import PopupQuicks from "@simple-quicks/app/page-modules/main-pages/_components/pop-up";
 import { FormProvider, useForm } from "react-hook-form";
+import TaskPopQuicks from "./_components/task-pop-quicks";
+import TaskList from "./_screens/task-list";
 
-const TaskSection = () => {
+const TaskSection: React.FC = () => {
   const methods = useForm({});
 
   return (
     <FormProvider {...methods}>
-      <PopupQuicks onCloseDetail={() => false}>
-        <Text>Task Section</Text>
-      </PopupQuicks>
+      <TaskPopQuicks onCloseDetail={() => false}>
+          <TaskList />
+      </TaskPopQuicks>
     </FormProvider>
   );
 };

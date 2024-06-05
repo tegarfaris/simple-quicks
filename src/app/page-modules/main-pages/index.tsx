@@ -5,6 +5,7 @@ import ButtonCircle from "@simple-quicks/app/components/button-circle";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
 import TaskSection from "./_sub-modules/task";
 import InboxSection from "./_sub-modules/inbox";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const MotionFlex = motion(Flex);
 
@@ -45,7 +46,7 @@ const MainPages: React.FC = () => {
         right="20px"
       >
         <ButtonCircle
-          icons="/assets/icons/feather_white.svg"
+          icons={ICONS.FEATHER_WHITE}
           bgColor={COLORS.PRIMARY_BLUE}
           width="18px"
           height="32px"
@@ -74,7 +75,7 @@ const MainPages: React.FC = () => {
                   <TaskSection />
                 </Flex>
                 <ButtonCircle
-                  icons="/assets/icons/task_yellow.svg"
+                  icons={ICONS.TASK_YELLOW}
                   bgColor={COLORS.SLATE}
                   width="26.67px"
                   height="26.67px"
@@ -94,7 +95,7 @@ const MainPages: React.FC = () => {
                   <InboxSection />
                 </Flex>
                 <ButtonCircle
-                  icons="/assets/icons/chat_purple.svg"
+                  icons={ICONS.CHAT_PURPLE}
                   bgColor={COLORS.SLATE}
                   width="26.67px"
                   height="26.67px"
