@@ -79,7 +79,7 @@ const InboxChatList: React.FC = () => {
 
   return (
     <Flex w="full" flexDir="column" gap="33.34px">
-      {DATA_BUBBLE.map((chat, index) => {
+      {DATA_BUBBLE.map((chat) => {
         const isTodayChat = chat.date === todayDate;
 
         if (

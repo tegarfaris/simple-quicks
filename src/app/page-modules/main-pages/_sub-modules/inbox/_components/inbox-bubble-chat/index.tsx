@@ -42,14 +42,7 @@ const InboxBubbleChat: React.FC<InboxBubbleChatProps> = ({
   };
 
   const handleSave = () => {
-    // Implement save logic here
-    // Simpan editedMessage ke server misalnya
     setEditMode(false);
-  };
-
-  const handleDelete = () => {
-    // Implement delete logic here
-    // Hapus chat
   };
 
   return (
@@ -112,9 +105,7 @@ const InboxBubbleChat: React.FC<InboxBubbleChatProps> = ({
             >
               {editMode ? "Save" : "Edit"}
             </MenuItem>
-            <MenuItem color={COLORS.RED} onClick={handleDelete}>
-              Delete
-            </MenuItem>
+            <MenuItem color={COLORS.RED}>Delete</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

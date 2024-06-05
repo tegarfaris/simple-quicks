@@ -1,15 +1,10 @@
-import { Box, Divider, Flex, Image, Text } from "@chakra-ui/react";
-import { BORDER, COLORS } from "@simple-quicks/theme/theme.utility";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
-import Inboxheader from "../../_components/inbox-header";
 import InboxChatList from "../inbox-chat-list";
 
-const InboxDetail: React.FC<{ id: number; onClose: () => void }> = ({
-  id,
-  onClose,
-}) => {
+const InboxDetail: React.FC = ({}) => {
   return (
-    <Flex w="full"  my="80.38px" flexDir="column">
+    <Flex w="full" my="80.38px" flexDir="column">
       <InboxChatList />
     </Flex>
   );
