@@ -15,6 +15,7 @@ const Inboxheader: React.FC<{
           cursor="pointer"
           onClick={onClose}
           w="16px"
+          alt="arrow_icons"
         />
 
         <Box>

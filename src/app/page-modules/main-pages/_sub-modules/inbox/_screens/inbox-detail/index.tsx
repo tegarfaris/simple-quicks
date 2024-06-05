@@ -9,7 +9,7 @@ const InboxDetail: React.FC<{ id: number; onClose: () => void }> = ({
   onClose,
 }) => {
   return (
-    <Flex w="full" flexDir="column">
+    <Flex w="full"  my="80.38px" flexDir="column">
       <InboxChatList />
     </Flex>
   );

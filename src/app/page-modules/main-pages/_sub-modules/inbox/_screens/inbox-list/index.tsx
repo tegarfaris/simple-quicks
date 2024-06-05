@@ -54,7 +54,8 @@ const InboxList: React.FC<InboxListProps> = ({
           placeholder="Search"
           required
           type="text"
-          rightElement={<Image src="/assets/icons/search_black.svg" w="20px" />}
+          rightElement={<Image src="/assets/icons/search_black.svg" w="20px" alt="search-icons" />}
+          pl="58.82px"
         />
       </Box>
       <Flex

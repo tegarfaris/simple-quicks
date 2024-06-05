@@ -38,6 +38,8 @@ interface InputFieldProps {
   pattern?: RegExp;
   isDisabled?: boolean;
   autocomplete?: boolean;
+  borderColor?:string;
+  pl?: string 
 }
 
 const InputField: React.FC<InputFieldProps> = (props) => {
@@ -67,12 +69,13 @@ const InputField: React.FC<InputFieldProps> = (props) => {
           placeholder={props.placeholder}
           bg="white"
           border="1px solid"
+          borderColor={props.borderColor}
           borderRadius="5px"
           min={props.min}
           max={props.max}
           type={props.type}
           isDisabled={props.isDisabled}
-          pl="58.82px"
+          pl={props.pl}
           {...register(props.id, {
             required: {
               value: !!props.required,
