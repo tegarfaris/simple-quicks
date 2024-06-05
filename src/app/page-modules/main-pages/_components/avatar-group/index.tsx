@@ -1,4 +1,5 @@
 import { Flex, Image } from "@chakra-ui/react";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
 import React from "react";
 
@@ -13,7 +14,7 @@ const AvatarGroup: React.FC = () => {
         rounded="full"
         bg={COLORS.SLATE}
       >
-        <Image src="/assets/icons/person_black.svg" w="18px" />
+        <Image src={ICONS.PERSON_BLACK} w="18px" alt="icons-person" />
       </Flex>
       <Flex
         pos="absolute"
@@ -25,7 +26,7 @@ const AvatarGroup: React.FC = () => {
         rounded="full"
         bg={COLORS.PRIMARY_BLUE}
       >
-        <Image src="/assets/icons/person_white.svg" w="18px" />
+        <Image src={ICONS.PERSON_WHITE} w="18px" alt="icons-person" />
       </Flex>
     </Flex>
   );

@@ -39,4 +39,5 @@ export enum STICKERS_COLORS {
   GREEN_MINTH = "#CBF1C2",
   PURPLE = "#CFCEF9",
   PINK = "#F9E0FD",
+  BLUE= "#9DD0ED"
 }

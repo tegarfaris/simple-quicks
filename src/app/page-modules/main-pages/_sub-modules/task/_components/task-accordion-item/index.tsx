@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Button,
   Checkbox,
   Flex,
   Image,
@@ -12,12 +13,19 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Popover,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import InputField from "@simple-quicks/app/components/input/input-field";
-import { COLORS } from "@simple-quicks/theme/theme.utility";
-import React from "react";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
+import { COLORS, STICKERS_COLORS } from "@simple-quicks/theme/theme.utility";
+import React, { RefObject } from "react";
 
 const TaskAccordionItem: React.FC = () => {
   const [checked, setChecked] = React.useState(false);
@@ -39,6 +47,112 @@ const TaskAccordionItem: React.FC = () => {
 
   const handleSave = () => {
     setEditDesc(false);
+  };
+
+  const openBadge = () => {
+    return (
+      <Popover closeOnBlur={false} placement="right">
+        {() => (
+          <>
+            <PopoverTrigger>
+              <Image
+                src={ICONS.BOOKMARKS_BLUE}
+                w="18.89px"
+                h="20px"
+                alt="bookmarks-icons"
+                cursor="pointer"
+              />
+            </PopoverTrigger>
+            <Portal>
+              <PopoverContent mt="380px">
+                <PopoverBody as={Flex} flexDir="column" py="14px" px="16px" gap="11px">
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.NEUTRAL}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Important ASAP
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.ORANGE}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Offline Meeting
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.ORANGE_SLATE}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Virtual Meeting
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.GREEN}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    ASAP
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.GREEN_MINTH}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Client Related
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.PURPLE}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Self Task
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.PINK}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Appoinment
+                  </Text>
+                  <Text
+                    py="8px"
+                    px="12px"
+                    rounded="10px"
+                    bg={STICKERS_COLORS.BLUE}
+                    fontFamily="lato"
+                    fontWeight={600}
+                  >
+                    Court Related
+                  </Text>
+                </PopoverBody>
+              </PopoverContent>
+            </Portal>
+          </>
+        )}
+      </Popover>
+    );
   };
 
   return (
@@ -81,7 +195,7 @@ const TaskAccordionItem: React.FC = () => {
               <Menu placement="bottom-end">
                 <MenuButton>
                   <Image
-                    src="/assets/icons/triple_dots.svg"
+                    src={ICONS.TRIPLE_DOTS}
                     w="16px"
                     alt="actions"
                   />
@@ -104,7 +218,7 @@ const TaskAccordionItem: React.FC = () => {
           >
             <Flex gap="23.57px" alignItems="center">
               <Image
-                src="/assets/icons/clock_blue.svg"
+                src={ICONS.CLOCK_BLUE}
                 w="20px"
                 h="20px"
                 alt="clock-icons"
@@ -121,7 +235,7 @@ const TaskAccordionItem: React.FC = () => {
 
             <Flex maxW="518px" gap="23.57px" alignItems="center">
               <Image
-                src="/assets/icons/pencil_blue.svg"
+                src={ICONS.PENCIL_BLUE}
                 w="20px"
                 h="20px"
                 alt="pencil-icons"
@@ -150,6 +264,30 @@ const TaskAccordionItem: React.FC = () => {
                   {editValue ? editValue : editDesc}
                 </Text>
               )}
+            </Flex>
+
+            {/* label tags */}
+            <Flex
+              gap="23.57px"
+              alignItems="center"
+              bg="#F9F9F9"
+              py="14px"
+              pl="12px"
+              ml="-12px"
+              rounded="10px"
+            >
+              {openBadge()}
+
+              <Text
+                py="8px"
+                px="12px"
+                rounded="10px"
+                bg={STICKERS_COLORS.GREEN}
+                fontFamily="lato"
+                fontWeight={600}
+              >
+                Client Related
+              </Text>
             </Flex>
           </AccordionPanel>
         </AccordionItem>

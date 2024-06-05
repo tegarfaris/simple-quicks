@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Divider, Flex, Image, Text } from "@chakra-ui/react";
 import { BORDER, COLORS } from "@simple-quicks/theme/theme.utility";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const Inboxheader: React.FC<{
   senderName: string;
@@ -11,7 +12,7 @@ const Inboxheader: React.FC<{
     <Flex flexDir="column">
       <Flex gap="13px" pb="18.44px">
         <Image
-          src="/assets/icons/arrow_back.svg"
+          src={ICONS.ARROW_BACK}
           cursor="pointer"
           onClick={onClose}
           w="16px"

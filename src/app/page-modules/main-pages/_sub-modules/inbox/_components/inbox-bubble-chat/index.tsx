@@ -9,6 +9,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 import { renderChatColor } from "@simple-quicks/app/helper/render-chat-color.helper";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
 import React, { useState } from "react";
@@ -102,7 +103,7 @@ const InboxBubbleChat: React.FC<InboxBubbleChatProps> = ({
         </Box>
         <Menu>
           <MenuButton>
-            <Image src="/assets/icons/triple_dots.svg" w="16px" alt="actions" />
+            <Image src={ICONS.TRIPLE_DOTS} w="16px" alt="actions" />
           </MenuButton>
           <MenuList>
             <MenuItem
