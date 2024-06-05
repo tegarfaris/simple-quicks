@@ -35,7 +35,7 @@ const PopupQuicks: React.FC<{
         pos="initial"
         flexDir="column"
         minW="734px"
-        h="737px"
+        h="637px"
         overflowY="scroll"
         overflowX="hidden"
         bg="white"

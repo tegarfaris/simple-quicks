@@ -1,10 +1,9 @@
-import { Box, Button, Divider, Flex, Image, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
+import { Box, Divider, Flex, Image } from "@chakra-ui/react";
 import InboxItem from "../../_components/inbox-item";
 import InboxDetail from "../inbox-detail";
-import { BORDER, COLORS } from "@simple-quicks/theme/theme.utility";
+import { BORDER } from "@simple-quicks/theme/theme.utility";
 import InputField from "@simple-quicks/app/components/input/input-field";
-import PopupQuicks from "@simple-quicks/app/page-modules/main-pages/_components/pop-up";
 import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const DATA_MESSAGE = [
@@ -46,24 +45,36 @@ const InboxList: React.FC<InboxListProps> = ({
   openInbox,
   closeInbox,
 }) => {
+  const [search, setSearch] = React.useState<string>("");
+
+  const filteredData = DATA_MESSAGE.filter(
+    (a) =>
+      a.messageName.toLowerCase().includes(search.toLowerCase()) ||
+      a.senderName.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <Flex flexDir="column">
       <Box display={selectedMessageId === null ? "initial" : "none"}>
+        {/* header */}
         <InputField
           id="search"
           name="search"
           placeholder="Search"
           required
           type="text"
-          rightElement={<Image src={ICONS.SEARCH_BLACK} w="20px" alt="search-icons" />}
+          rightElement={
+            <Image src={ICONS.SEARCH_BLACK} w="20px" alt="search-icons" />
+          }
           pl="58.82px"
+          onChange={(e) => setSearch(e.currentTarget.value)}
         />
       </Box>
       <Flex
         display={selectedMessageId === null ? "flex" : "none"}
         flexDir="column"
       >
-        {DATA_MESSAGE.map((message) => (
+        {filteredData.map((message) => (
           <>
             <InboxItem
               key={message.id}
@@ -78,9 +89,7 @@ const InboxList: React.FC<InboxListProps> = ({
           </>
         ))}
       </Flex>
-      {selectedMessageId !== null && (
-        <InboxDetail id={selectedMessageId} onClose={closeInbox} />
-      )}
+      {selectedMessageId !== null && <InboxDetail />}
     </Flex>
   );
 };
