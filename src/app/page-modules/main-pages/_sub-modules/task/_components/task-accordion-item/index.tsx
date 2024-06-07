@@ -13,25 +13,24 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Popover,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import InputField from "@simple-quicks/app/components/input/input-field";
 import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 import { COLORS, STICKERS_COLORS } from "@simple-quicks/theme/theme.utility";
-import React, { RefObject } from "react";
+import React from "react";
+import { BadgeList } from "../badge-list/badge-list";
 
-const TaskAccordionItem: React.FC = () => {
+
+interface TaskAccordionItemProps {
+  titleTask: string;
+  date: string;
+  description: string;
+}
+const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({titleTask, date, description}) => {
   const [checked, setChecked] = React.useState(false);
   const [editDesc, setEditDesc] = React.useState(false);
-  const description =
-    "Closing off this case since this application has been cancelled. No one really understand how this case could possibly be cancelled. The options and the documents within this document were totally a guaranteed for a success!";
   const [editValue, setEditValue] = React.useState(description);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -49,114 +48,10 @@ const TaskAccordionItem: React.FC = () => {
     setEditDesc(false);
   };
 
-  const openBadge = () => {
-    return (
-      <Popover closeOnBlur={false} placement="right">
-        {() => (
-          <>
-            <PopoverTrigger>
-              <Image
-                src={ICONS.BOOKMARKS_BLUE}
-                w="18.89px"
-                h="20px"
-                alt="bookmarks-icons"
-                cursor="pointer"
-              />
-            </PopoverTrigger>
-            <Portal>
-              <PopoverContent mt="380px">
-                <PopoverBody as={Flex} flexDir="column" py="14px" px="16px" gap="11px">
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.NEUTRAL}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Important ASAP
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.ORANGE}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Offline Meeting
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.ORANGE_SLATE}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Virtual Meeting
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.GREEN}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    ASAP
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.GREEN_MINTH}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Client Related
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.PURPLE}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Self Task
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.PINK}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Appoinment
-                  </Text>
-                  <Text
-                    py="8px"
-                    px="12px"
-                    rounded="10px"
-                    bg={STICKERS_COLORS.BLUE}
-                    fontFamily="lato"
-                    fontWeight={600}
-                  >
-                    Court Related
-                  </Text>
-                </PopoverBody>
-              </PopoverContent>
-            </Portal>
-          </>
-        )}
-      </Popover>
-    );
-  };
+
 
   return (
-    <Flex flexDir="column">
+    <Flex flexDir="column" w="full">
       <Accordion defaultIndex={[0]} allowMultiple w="full">
         <AccordionItem>
           <Flex w="full">
@@ -181,24 +76,20 @@ const TaskAccordionItem: React.FC = () => {
                 textDecoration={checked ? "line-through" : "none"}
                 fontWeight={600}
               >
-                Close off Case #012920- RODRIGUES, Amiguel
+                {titleTask}
               </Box>
               <Text fontFamily="lato" fontSize="14px" color={COLORS.RED}>
                 2 Days Left
               </Text>
               <Text fontFamily="lato" fontSize="14px">
-                12/06/2021
+                {date}
               </Text>
               <AccordionIcon />
             </AccordionButton>
             <Flex px="20px" mr="10px">
               <Menu placement="bottom-end">
                 <MenuButton>
-                  <Image
-                    src={ICONS.TRIPLE_DOTS}
-                    w="16px"
-                    alt="actions"
-                  />
+                  <Image src={ICONS.TRIPLE_DOTS} w="16px" alt="actions" />
                 </MenuButton>
                 <MenuList>
                   <MenuItem color={COLORS.RED} _hover={{ bg: "transparent" }}>
@@ -276,12 +167,13 @@ const TaskAccordionItem: React.FC = () => {
               ml="-12px"
               rounded="10px"
             >
-              {openBadge()}
+              <BadgeList />
 
               <Text
-                py="8px"
+                 h="28px"
+                py="2px"
                 px="12px"
-                rounded="10px"
+                rounded="5px"
                 bg={STICKERS_COLORS.GREEN}
                 fontFamily="lato"
                 fontWeight={600}
