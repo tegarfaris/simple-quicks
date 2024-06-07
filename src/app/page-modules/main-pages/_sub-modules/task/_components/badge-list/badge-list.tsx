@@ -53,7 +53,7 @@ export const BadgeList: React.FC<BadgeListProps> = ({setBadgeValue}) => {
                     fontSize="16px"
                     fontWeight={600}
                     cursor="pointer"
-                    onClick={() => setBadgeValue(badge.value)}
+                    onClick={() => setBadgeValue && setBadgeValue(badge.value)}
                   >
                     {badge.text}
                   </Text>
