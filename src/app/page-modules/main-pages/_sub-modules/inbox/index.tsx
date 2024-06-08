@@ -1,20 +1,23 @@
 import React from "react";
+import InboxList from "./_screens/inbox-list";
 import { FormProvider, useForm } from "react-hook-form";
 import PopupQuicks from "../../_components/pop-up";
-import InputField from "@simple-quicks/app/components/input/input-field";
-import { Flex, Image, Spinner, Text } from "@chakra-ui/react";
-import { COLORS, SPINNER_COLORS } from "@simple-quicks/theme/theme.utility";
-import SectionLoader from "../../_components/section-loader";
-import InboxList from "./_screens/inbox-list";
+import useInbox from "@simple-quicks/app/hooks/api/useInbox";
+import {
+  IInbox,
+  IParamsGetInbox,
+} from "@simple-quicks/app/interface/inbox.interface";
 
-const InboxSection = () => {
+const InboxSection: React.FC = () => {
   const methods = useForm({});
-  const isPending = false;
+  const { inboxList, getInboxList, inboxIsEmpty, inboxPending, inboxSuccess } =
+    useInbox();
+  const [paramsInbox, setParamsInbox] = React.useState<IParamsGetInbox>();
   const [selectedMessageId, setSelectedMessageId] = React.useState<
-    number | null
+    string | null
   >(null);
 
-  const openInbox = (id: number) => {
+  const openInbox = (id: string) => {
     setSelectedMessageId(id);
   };
 
@@ -22,28 +25,33 @@ const InboxSection = () => {
     setSelectedMessageId(null);
   };
 
-  const renderContent = () => {
-    if (isPending) {
-      return <SectionLoader />;
-    } else {
-      return (
-        <InboxList
-          selectedMessageId={selectedMessageId}
-          openInbox={openInbox}
-          closeInbox={closeInbox}
-        />
-      );
-    }
-  };
+  React.useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      getInboxList({
+        search: paramsInbox?.search,
+        sortBy: paramsInbox?.sortBy,
+      });
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [getInboxList, paramsInbox?.search, paramsInbox?.sortBy]);
 
   return (
     <FormProvider {...methods}>
-      <PopupQuicks
-        header={selectedMessageId !== null}
-        footer={selectedMessageId !== null}
-        onCloseDetail={closeInbox}
-      >
-        {renderContent()}
+      <PopupQuicks>
+        <InboxList
+          selectedMessageId={selectedMessageId}
+          paramsInbox={paramsInbox as IParamsGetInbox}
+          setParamsInbox={setParamsInbox}
+          inboxList={inboxList as IInbox[]}
+          openInbox={openInbox}
+          pending={inboxPending}
+          success={inboxSuccess}
+          isEmpty={inboxIsEmpty}
+          onCloseDetail={closeInbox}
+        />
       </PopupQuicks>
     </FormProvider>
   );

@@ -32,7 +32,6 @@ const InboxItem: React.FC<InboxItemProps> = ({
         {/* avatar section */}
         <AvatarGroup />
 
-        {/* message name */}
         <Box>
           <Flex gap="16px">
             <Text
@@ -51,7 +50,7 @@ const InboxItem: React.FC<InboxItemProps> = ({
           <Text fontFamily="lato" fontWeight={700} fontSize="14px">
             {senderName}
           </Text>
-          <Text fontFamily="lato" fontSize="14px" noOfLines={1}>
+          <Text fontFamily="lato" w="450px" fontSize="14px" noOfLines={1}>
             {bodyMessage}
           </Text>
         </Box>
