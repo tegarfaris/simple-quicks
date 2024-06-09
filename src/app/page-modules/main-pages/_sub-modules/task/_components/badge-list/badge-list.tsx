@@ -8,17 +8,32 @@ import {
   Portal,
   Text,
 } from "@chakra-ui/react";
-import { STICKERS_COLORS } from "@simple-quicks/theme/theme.utility";
 import { ICONS } from "../../../../../../helper/icons.helper";
-import React, { Dispatch, SetStateAction } from "react";
-import LABEL_BADGE from "@simple-quicks/app/data/data-badge.json"
+import React from "react";
+import LABEL_BADGE from "@simple-quicks/app/data/data-badge.json";
+import { renderTags } from "@simple-quicks/app/helper/render-tags.helper";
+import { EBadge } from "@simple-quicks/app/interface/task.interface";
 
 interface BadgeListProps {
-  setBadgeValue?: Dispatch<SetStateAction<string>>
+  onAddTag: (tag: EBadge) => void;
+  onOpen: () => void;
+  onClose: () => void;
+  handleSave: (field: string) => void;
 }
-export const BadgeList: React.FC<BadgeListProps> = ({setBadgeValue}) => {
+
+export const BadgeList: React.FC<BadgeListProps> = ({
+  onAddTag,
+  onClose,
+  onOpen,
+  handleSave,
+}) => {
   return (
-    <Popover closeOnBlur={false} placement="bottom">
+    <Popover
+      closeOnBlur={false}
+      placement="bottom"
+      onOpen={onOpen}
+      onClose={onClose}
+    >
       {() => (
         <>
           <PopoverTrigger>
@@ -48,12 +63,18 @@ export const BadgeList: React.FC<BadgeListProps> = ({setBadgeValue}) => {
                     w="246px"
                     h="28px"
                     rounded="5px"
-                    bg={STICKERS_COLORS.NEUTRAL}
+                    bg={renderTags(badge.value as EBadge).bgColor}
                     fontFamily="lato"
                     fontSize="16px"
                     fontWeight={600}
                     cursor="pointer"
-                    onClick={() => setBadgeValue && setBadgeValue(badge.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSave("tags");
+                      }
+                    }}
+                    onClick={() => onAddTag(badge.value as EBadge)}
                   >
                     {badge.text}
                   </Text>

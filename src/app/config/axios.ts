@@ -5,13 +5,17 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-const AXIOS_INSTANCE = axios.create({
-  baseURL: process.env["NEXT_PUBLIC_BASE_URL"],
+const AXIOS_INSTANCE_INBOX = axios.create({
+  baseURL: process.env["NEXT_PUBLIC_BASE_URL_INBOX"],
+});
+
+const AXIOS_INSTANCE_TASK = axios.create({
+  baseURL: process.env["NEXT_PUBLIC_BASE_URL_TASK"],
 });
 
 const devLogger = (message: string) => {
-  if (process.env["NEXT_PUBLIC_BASE_URL"] !== "true") {
-    console.log("message", message);
+  if (process.env["NEXT_PUBLIC_ENV"] !== "true") {
+    console.log(message);
   }
 };
 
@@ -47,10 +51,11 @@ const onErrorResponse = (error: AxiosError | Error): Promise<AxiosError> => {
   return Promise.reject(error);
 };
 
-const setupInterceptors = (AXIOS_INSTANCE: AxiosInstance): AxiosInstance => {
-  AXIOS_INSTANCE.interceptors.request.use(onRequest, onErrorResponse);
-  AXIOS_INSTANCE.interceptors.response.use(onResponse, onErrorResponse);
-  return AXIOS_INSTANCE;
+const setupInterceptors = (axiosInstance: AxiosInstance): AxiosInstance => {
+  axiosInstance.interceptors.request.use(onRequest, onErrorResponse);
+  axiosInstance.interceptors.response.use(onResponse, onErrorResponse);
+  return axiosInstance;
 };
 
-export const REQUEST = setupInterceptors(AXIOS_INSTANCE);
+export const REQUEST_INBOX = setupInterceptors(AXIOS_INSTANCE_INBOX);
+export const REQUEST_TASK = setupInterceptors(AXIOS_INSTANCE_TASK);

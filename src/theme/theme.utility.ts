@@ -32,12 +32,12 @@ export enum CHATS_COLORS {
 }
 
 export enum STICKERS_COLORS {
-  NEUTRAL = "#E9F3FF",
+  NEUTRAL = "#E5F1FF",
   ORANGE = "#FDCFA4",
   ORANGE_SLATE = "#F9E9C3",
   GREEN = "#AFEBDB",
   GREEN_MINTH = "#CBF1C2",
   PURPLE = "#CFCEF9",
   PINK = "#F9E0FD",
-  BLUE= "#9DD0ED"
+  BLUE = "#9DD0ED",
 }

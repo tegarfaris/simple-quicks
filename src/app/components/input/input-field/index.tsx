@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { KeyboardEventHandler, ReactNode } from "react";
 import {
   FormControl,
   FormErrorMessage,
@@ -38,8 +38,9 @@ interface InputFieldProps {
   pattern?: RegExp;
   isDisabled?: boolean;
   autocomplete?: boolean;
-  borderColor?:string;
-  pl?: string 
+  borderColor?: string;
+  pl?: string;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
 }
 
 const InputField: React.FC<InputFieldProps> = (props) => {
@@ -63,6 +64,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
           <InputLeftElement>{props.leftElement}</InputLeftElement>
         )}
         <Input
+          onKeyDown={props.onKeyDown}
           autoComplete={props.autocomplete ? "on" : "off"}
           id={props.id}
           value={props.value}

@@ -6,25 +6,9 @@ import TaskHeader from "../task-header";
 
 const TaskPopQuicks: React.FC<{
   children: React.ReactNode;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-  onCloseDetail: () => void;
-}> = ({ children, header, footer, onCloseDetail }) => {
+}> = ({ children }) => {
   return (
     <Flex pos="relative" flexDir="column">
-      <Flex
-        pos="absolute"
-        top={0}
-        w="full"
-        borderRadius="10px"
-        px="32px"
-        pt="24px"
-        zIndex={2}
-        bg="white"
-      >
-        {/* header */}
-        <TaskHeader />
-      </Flex>
       <Flex
         pos="initial"
         flexDir="column"
