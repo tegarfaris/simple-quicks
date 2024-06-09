@@ -5,15 +5,19 @@ import TaskHeader from "../../_components/task-header";
 import useTask from "@simple-quicks/app/hooks/api/useTask";
 import SectionLoader from "@simple-quicks/app/page-modules/main-pages/_components/section-loader";
 import { FormProvider, useForm } from "react-hook-form";
-import { EBadge } from "@simple-quicks/app/interface/task.interface";
+import {
+  EBadge,
+  IParamsTask,
+} from "@simple-quicks/app/interface/task.interface";
 
 const TaskList: React.FC = () => {
   const { getTaskList, taskList, taskPending, refetch } = useTask();
+  const [params, setParams] = React.useState<IParamsTask>();
 
   React.useEffect(() => {
-    getTaskList({ order: "desc" });
-  }, [getTaskList, refetch]);
-
+    getTaskList({ order: "desc", filter: params?.filter });
+  }, [getTaskList, refetch, params?.filter]);
+  console.log("DATA: ", taskList);
   return (
     <Flex flexDir="column" w="full" mt="70px" h="full">
       <Flex
@@ -28,7 +32,7 @@ const TaskList: React.FC = () => {
         bg="white"
       >
         {/* header */}
-        <TaskHeader />
+        <TaskHeader params={params as IParamsTask} setParams={setParams} />
       </Flex>
 
       {/* loading state */}
@@ -56,6 +60,7 @@ const TaskList: React.FC = () => {
             description={task.description as string}
             tags={task.tags as EBadge[]}
             taskId={task.id as string}
+            isChecked={task.isChecked as boolean}
           />
         ))}
       </Flex>

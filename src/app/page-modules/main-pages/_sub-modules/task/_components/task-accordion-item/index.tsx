@@ -35,6 +35,7 @@ interface TaskAccordionItemProps {
   date: string;
   description: string;
   tags: EBadge[];
+  isChecked: boolean;
 }
 const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
   taskId,
@@ -42,8 +43,8 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
   date,
   description,
   tags,
+  isChecked,
 }) => {
-  const [checked, setChecked] = React.useState(false);
   const [edit, setEdit] = React.useState({
     titleTask: false,
     description: false,
@@ -121,11 +122,18 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
         });
         setEdit({ ...edit, description: false });
         break;
+      case "checked":
+        editTask({
+          id: taskId,
+          isChecked: !isChecked,
+        });
     }
   };
-
   React.useEffect(() => {
-    if (!isOpen && selectedTags.length > 0) {
+    const updatedTags = selectedTags.map((tag) => tag);
+    const initialTags = tags.map((tag) => tag);
+
+    if (!isOpen && updatedTags !== initialTags) {
       editTask({
         id: taskId,
         tags: selectedTags as EBadge[],
@@ -155,7 +163,8 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
             <Flex alignItems="center" w="full" gap="22.5px">
               <Checkbox
                 colorScheme="gray"
-                onChange={() => setChecked(!checked)}
+                isChecked={isChecked}
+                onChange={() => handleSave("checked")}
               />
               <Flex
                 alignItems="center"
@@ -168,9 +177,9 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
                   w="333px"
                   textAlign="left"
                   fontFamily="lato"
-                  color={checked ? COLORS.NEUTRAL : COLORS.SECONDARY}
+                  color={isChecked ? COLORS.NEUTRAL : COLORS.SECONDARY}
                   fontSize="16px"
-                  textDecoration={checked ? "line-through" : "none"}
+                  textDecoration={isChecked ? "line-through" : "none"}
                   fontWeight={600}
                   cursor="pointer"
                   onClick={() => handleEdit("title")}

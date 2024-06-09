@@ -55,9 +55,7 @@ const useTask = () => {
   const editTask = useCallback(
     (payload: ITask) => {
       dispatch(REQUEST_EDIT_TASK(payload)).then((result) => {
-        if (result.meta.requestStatus === "fulfilled") {
-          handleSuccess("Task has been updated");
-        } else if (result.meta.requestStatus === "rejected") {
+        if (result.meta.requestStatus === "rejected") {
           handleError(
             result.payload?.response?.status,
             result.payload?.response?.data.message

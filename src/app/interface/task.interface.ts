@@ -16,6 +16,7 @@ export interface IParamsTask {
 
 export interface ITask {
   id?: string;
+  isChecked?: boolean;
   title?: string;
   expireDate?: string;
   description?: string;
