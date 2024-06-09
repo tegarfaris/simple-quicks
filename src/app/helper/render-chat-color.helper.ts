@@ -1,31 +1,21 @@
 import { CHATS_COLORS } from "@simple-quicks/theme/theme.utility";
 
-export const renderChatColor = (role: string) => {
+export const renderChatColor = (isSender: boolean) => {
   let textColor;
   let bgColor;
   let alignItems;
   let direction;
 
-  switch (role) {
-    case "me":
-      textColor = CHATS_COLORS.PURPLE_PRIMARY;
-      bgColor = CHATS_COLORS.PURPLE_SLATE;
-      alignItems = "end";
-      direction = "row-reverse";
-      break;
-    case "other":
-      const randomColor =
-        Math.random() < 0.5
-          ? CHATS_COLORS.GREEN_PRIMARY
-          : CHATS_COLORS.ORANGE_PRIMARY;
-      textColor = randomColor;
-      bgColor =
-        randomColor === CHATS_COLORS.GREEN_PRIMARY
-          ? CHATS_COLORS.GREEN_SLATE
-          : CHATS_COLORS.ORANGE_SLATE;
-      alignItems = "start";
-      direction = "row";
-      break;
+  if (isSender) {
+    textColor = CHATS_COLORS.PURPLE_PRIMARY;
+    bgColor = CHATS_COLORS.PURPLE_SLATE;
+    alignItems = "end";
+    direction = "row-reverse";
+  } else {
+    textColor = CHATS_COLORS.GREEN_PRIMARY;
+    bgColor = CHATS_COLORS.GREEN_SLATE;
+    alignItems = "start";
+    direction = "row";
   }
 
   return { textColor, bgColor, alignItems, direction };

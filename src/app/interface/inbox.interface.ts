@@ -1,23 +1,19 @@
-export enum ETypeSender {
-  IS_YOU = "is-you",
-  IS_OTHERS = "is-others",
-}
-
 export interface IMessages {
-  titleMessage: string;
+  id: string;
+  titleMessage?: string;
   senderName: string;
   bodyChat: string;
   createdAt: string;
-  updatedAt: string;
-  isRead: boolean;
-  type: ETypeSender;
+  updatedAt?: string;
+  isRead?: boolean;
+  isSender: boolean;
+  isEdited?: boolean;
 }
 
 export interface IInbox {
   id: string;
   titleMessage: string;
   date: string;
-  participants: number;
   messages: IMessages[];
 }
 

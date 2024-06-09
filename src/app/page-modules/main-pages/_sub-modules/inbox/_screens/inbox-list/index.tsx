@@ -1,15 +1,22 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { Box, Divider, Flex, Image, Text } from "@chakra-ui/react";
+import { Divider, Flex, Text } from "@chakra-ui/react";
 import InboxItem from "../../_components/inbox-item";
 import InboxDetail from "../inbox-detail";
 import { BORDER } from "@simple-quicks/theme/theme.utility";
-import InputField from "@simple-quicks/app/components/input/input-field";
-import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 import {
   IInbox,
+  IMessages,
   IParamsGetInbox,
 } from "@simple-quicks/app/interface/inbox.interface";
 import SectionLoader from "@simple-quicks/app/page-modules/main-pages/_components/section-loader";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import dayjs from "dayjs";
+import useInbox from "@simple-quicks/app/hooks/api/useInbox";
 
 interface InboxListProps {
   selectedMessageId: string | null;
@@ -24,45 +31,44 @@ interface InboxListProps {
 }
 const InboxList: React.FC<InboxListProps> = ({
   selectedMessageId,
-  paramsInbox,
-  setParamsInbox,
   inboxList,
   openInbox,
   pending,
-  success,
   isEmpty,
   onCloseDetail,
 }) => {
+  const { sendMessage } = useInbox();
+  const methods = useForm();
+
+  const { reset } = methods;
+
+  const send: SubmitHandler<IMessages> = (data) => {
+    if (selectedMessageId) {
+      sendMessage({
+        id: selectedMessageId,
+        isSender: true,
+        isRead: true,
+        senderName: "Tegar Faris Nurhakim",
+        bodyChat: data.bodyChat,
+        createdAt: dayjs().format("YYYY-MM-DD"),
+      });
+      reset({ bodyChat: "" });
+    }
+  };
+
   if (pending) {
     return <SectionLoader />;
   }
 
-  if (isEmpty && success) {
+  if (isEmpty) {
     return (
-      <Flex justifyContent="center" alignItems="center">
+      <Flex w="full" h="full" justifyContent="center" alignItems="center">
         <Text>Oops... Inbox is empty !</Text>
       </Flex>
     );
   }
   return (
     <Flex w="full" flexDir="column">
-      <Box display={selectedMessageId === null ? "initial" : "none"}>
-        {/* header */}
-        <InputField
-          id="search"
-          name="search"
-          placeholder="Search"
-          required
-          type="text"
-          rightElement={
-            <Image src={ICONS.SEARCH_BLACK} w="20px" alt="search-icons" />
-          }
-          pl="58.82px"
-          onChange={(e) =>
-            setParamsInbox({ ...paramsInbox, search: e.currentTarget.value })
-          }
-        />
-      </Box>
       <Flex
         display={selectedMessageId === null ? "flex" : "none"}
         flexDir="column"
@@ -75,7 +81,7 @@ const InboxList: React.FC<InboxListProps> = ({
               date={inbox.date}
               senderName={inbox.messages[0].senderName}
               bodyMessage={inbox.messages[0].bodyChat}
-              read={inbox.messages[0].isRead}
+              read={inbox.messages[0].isRead as boolean}
               onClick={() => openInbox(inbox.id)}
             />
             <Divider borderColor={BORDER.DEFAULT} />
@@ -83,9 +89,16 @@ const InboxList: React.FC<InboxListProps> = ({
         ))}
       </Flex>
 
-      {selectedMessageId !== null && (
-        <InboxDetail onCloseDetail={onCloseDetail} />
-      )}
+      <FormProvider {...methods}>
+        {selectedMessageId !== null && (
+          <InboxDetail
+            selectedMessageId={selectedMessageId}
+            onCloseDetail={onCloseDetail}
+            send={send as SubmitHandler<FieldValues>}
+            pending={pending}
+          />
+        )}
+      </FormProvider>
     </Flex>
   );
 };
