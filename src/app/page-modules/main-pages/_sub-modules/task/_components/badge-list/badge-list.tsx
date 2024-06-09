@@ -18,14 +18,12 @@ interface BadgeListProps {
   onAddTag: (tag: EBadge) => void;
   onOpen: () => void;
   onClose: () => void;
-  handleSave: (field: string) => void;
 }
 
 export const BadgeList: React.FC<BadgeListProps> = ({
   onAddTag,
   onClose,
   onOpen,
-  handleSave,
 }) => {
   return (
     <Popover
@@ -68,12 +66,6 @@ export const BadgeList: React.FC<BadgeListProps> = ({
                     fontSize="16px"
                     fontWeight={600}
                     cursor="pointer"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleSave("tags");
-                      }
-                    }}
                     onClick={() => onAddTag(badge.value as EBadge)}
                   >
                     {badge.text}

@@ -333,7 +333,6 @@ const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
                   onAddTag={handleAddTag}
                   onOpen={onOpen}
                   onClose={onClose}
-                  handleSave={handleSave}
                 />
                 {selectedTags.map((tag, idx) => (
                   <Box
