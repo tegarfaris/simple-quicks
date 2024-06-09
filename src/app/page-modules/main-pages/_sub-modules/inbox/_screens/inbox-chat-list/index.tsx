@@ -1,17 +1,9 @@
 import React from "react";
-import {
-  AbsoluteCenter,
-  Box,
-  ButtonGroup,
-  Divider,
-  Flex,
-  Spinner,
-} from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Divider, Flex } from "@chakra-ui/react";
 import InboxBubbleChat from "../../_components/inbox-bubble-chat";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
 import { IMessages } from "@simple-quicks/app/interface/inbox.interface";
 import dayjs from "dayjs";
-import SectionLoader from "@simple-quicks/app/page-modules/main-pages/_components/section-loader";
 import useInbox from "@simple-quicks/app/hooks/api/useInbox";
 
 interface InboxChatListProps {

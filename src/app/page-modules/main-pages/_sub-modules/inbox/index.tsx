@@ -1,7 +1,7 @@
 import React from "react";
 import InboxList from "./_screens/inbox-list";
 import { FormProvider, useForm } from "react-hook-form";
-import PopupQuicks from "../../_components/pop-up";
+import PopupQuicks from "./_components/pop-up";
 import useInbox from "@simple-quicks/app/hooks/api/useInbox";
 import {
   IInbox,
@@ -13,14 +13,8 @@ import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const InboxSection: React.FC = () => {
   const methods = useForm({});
-  const {
-    inboxList,
-    getInboxList,
-    inboxIsEmpty,
-    inboxPending,
-    inboxSuccess,
-    refetchMessage,
-  } = useInbox();
+  const { inboxList, getInboxList, inboxIsEmpty, inboxPending, inboxSuccess } =
+    useInbox();
   const [paramsInbox, setParamsInbox] = React.useState<IParamsGetInbox>();
   const [selectedMessageId, setSelectedMessageId] = React.useState<
     string | null

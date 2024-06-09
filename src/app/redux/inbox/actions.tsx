@@ -4,7 +4,7 @@ import {
   API_INBOX_EDIT_MESSAGE,
   API_INBOX_MESSAGE,
 } from "@simple-quicks/app/config/api/api-inbox";
-import { REQUEST } from "@simple-quicks/app/config/axios";
+import { REQUEST_INBOX } from "@simple-quicks/app/config/axios";
 import {
   IMessages,
   IParamsGetInbox,
@@ -15,7 +15,7 @@ export const REQUEST_GET_INBOXS = createAsyncThunk(
   "inbox/list",
   async (params: IParamsGetInbox, { rejectWithValue }) => {
     try {
-      const response = await REQUEST.get(API_INBOX.INBOXS, {
+      const response = await REQUEST_INBOX.get(API_INBOX.INBOXS, {
         params: params,
       });
       return response.data;
@@ -30,7 +30,7 @@ export const REQUEST_DETAIL_INBOX = createAsyncThunk(
   "inbox/detail",
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await REQUEST.get(API_INBOX_MESSAGE(id));
+      const response = await REQUEST_INBOX.get(API_INBOX_MESSAGE(id));
       return response.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -46,9 +46,12 @@ export const REQUEST_GET_MESSAGE = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await REQUEST.get(API_INBOX_MESSAGE(params.inboxId), {
-        params: params,
-      });
+      const response = await REQUEST_INBOX.get(
+        API_INBOX_MESSAGE(params.inboxId),
+        {
+          params: params,
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -61,7 +64,7 @@ export const REQUEST_SEND_MESSAGE = createAsyncThunk(
   "inbox/send",
   async (payload: IMessages, { rejectWithValue }) => {
     try {
-      const response = await REQUEST.post(
+      const response = await REQUEST_INBOX.post(
         API_INBOX_MESSAGE(payload.id),
         payload
       );
@@ -80,7 +83,7 @@ export const REQUEST_EDIT_MESSAGE = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await REQUEST.put(
+      const response = await REQUEST_INBOX.put(
         API_INBOX_EDIT_MESSAGE(payload?.inboxId, payload?.data?.id),
         payload.data
       );
@@ -96,7 +99,7 @@ export const REQUEST_DELETE_MESSAGE = createAsyncThunk(
   "inbox/delete",
   async (data: { inboxId: string; id: string }, { rejectWithValue }) => {
     try {
-      const response = await REQUEST.delete(
+      const response = await REQUEST_INBOX.delete(
         API_INBOX_EDIT_MESSAGE(data.inboxId, data.id)
       );
       return response.data;

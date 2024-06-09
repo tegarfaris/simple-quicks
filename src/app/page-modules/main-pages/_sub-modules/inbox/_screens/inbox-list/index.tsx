@@ -91,6 +91,9 @@ const InboxList: React.FC<InboxListProps> = ({
                   inbox.messages[inbox?.messages.length - 1].isRead as boolean
                 }
                 onClick={() => openInbox(inbox.id)}
+                isSender={
+                  inbox.messages[inbox?.messages.length - 1].isSender as boolean
+                }
               />
               <Divider borderColor={BORDER.DEFAULT} />
             </>

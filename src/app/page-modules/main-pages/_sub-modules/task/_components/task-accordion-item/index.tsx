@@ -1,190 +1,258 @@
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Box,
-  Button,
-  Checkbox,
   Flex,
   Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   Textarea,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import InputField from "@simple-quicks/app/components/input/input-field";
 import { ICONS } from "@simple-quicks/app/helper/icons.helper";
-import { COLORS, STICKERS_COLORS } from "@simple-quicks/theme/theme.utility";
+import { COLORS } from "@simple-quicks/theme/theme.utility";
 import React from "react";
-import { BadgeList } from "../badge-list/badge-list";
-
+import { EBadge } from "@simple-quicks/app/interface/task.interface";
+import dayjs from "dayjs";
+import { FormProvider, useForm } from "react-hook-form";
+import useTask from "@simple-quicks/app/hooks/api/useTask";
+import TaskTitleInfo from "../task-title-info";
+import TaskTags from "../task-tags";
 
 interface TaskAccordionItemProps {
+  taskId: string;
   titleTask: string;
   date: string;
   description: string;
+  tags: EBadge[];
+  isChecked: boolean;
 }
-const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({titleTask, date, description}) => {
-  const [checked, setChecked] = React.useState(false);
-  const [editDesc, setEditDesc] = React.useState(false);
-  const [editValue, setEditValue] = React.useState(description);
+const TaskAccordionItem: React.FC<TaskAccordionItemProps> = ({
+  taskId,
+  titleTask,
+  date,
+  description,
+  tags,
+  isChecked,
+}) => {
+  const [edit, setEdit] = React.useState({
+    titleTask: false,
+    description: false,
+  });
+  const [editValue, setEditValue] = React.useState({
+    titleTask: titleTask,
+    description: description,
+  });
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const [selectedTags, setSelectedTags] = React.useState<EBadge[]>(tags);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const { deleteTask, editTask } = useTask();
+
+  const methods = useForm({
+    values: {
+      date: dayjs(date).format("YYYY-MM-DD"),
+    },
+  });
+
+  const { watch, getValues } = methods;
 
   React.useEffect(() => {
-    if (editDesc && textareaRef.current) {
+    if (edit.description && textareaRef.current) {
       textareaRef.current.focus();
     }
-  }, [editDesc]);
+  }, [edit.description]);
 
-  const handleEdit = () => {
-    setEditDesc(true);
+  const handleAddTag = (tag: EBadge) => {
+    if (selectedTags.some((t) => t === tag)) {
+      toast({
+        title: "Duplicate tag",
+        description: "This tag has already been added.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      setSelectedTags((prevTags) => [...prevTags, tag]);
+    }
   };
 
-  const handleSave = () => {
-    setEditDesc(false);
+  const deleteTag = (tagToDelete: EBadge) => {
+    setSelectedTags((prevTags) =>
+      prevTags.filter((tag) => tag !== tagToDelete)
+    );
   };
 
+  const handleEdit = (field: string) => {
+    switch (field) {
+      case "title":
+        setEdit({ ...edit, titleTask: true });
+        break;
+      case "description":
+        setEdit({ ...edit, description: true });
+        break;
+    }
+  };
 
+  const handleSave = (field: string) => {
+    switch (field) {
+      case "title":
+        editTask({
+          id: taskId,
+          title: editValue.titleTask,
+        });
+        setEdit({ ...edit, titleTask: false });
+        break;
+
+      case "description":
+        editTask({
+          id: taskId,
+          description: editValue.description,
+        });
+        setEdit({ ...edit, description: false });
+        break;
+      case "checked":
+        editTask({
+          id: taskId,
+          isChecked: !isChecked,
+        });
+    }
+  };
+
+  // for update data
+  React.useEffect(() => {
+    const updatedTags = selectedTags.map((tag) => tag);
+    const initialTags = tags.map((tag) => tag);
+
+    if (!isOpen && updatedTags !== initialTags) {
+      editTask({
+        id: taskId,
+        tags: selectedTags as EBadge[],
+      });
+    }
+    if (getValues("date") !== date && taskId) {
+      editTask({
+        id: taskId,
+        expireDate: watch("date"),
+      });
+    }
+  }, [editTask, selectedTags.length, taskId, isOpen, watch("date")]);
+
+  const handleDelete = () => {
+    deleteTask(taskId);
+  };
+
+  const daysDiff = dayjs(date).diff(dayjs(), "days");
+  const displayDaysDiff =
+    isNaN(daysDiff) || daysDiff <= 0 ? "" : `${daysDiff} Days`;
 
   return (
-    <Flex flexDir="column" w="full">
-      <Accordion defaultIndex={[0]} allowMultiple w="full">
-        <AccordionItem>
-          <Flex w="full">
-            <AccordionButton
+    <FormProvider {...methods}>
+      <Flex flexDir="column" w="full">
+        <Accordion defaultIndex={[0]} allowMultiple w="full">
+          <AccordionItem>
+            {/* top accordion section */}
+            <TaskTitleInfo
+              isChecked={isChecked}
+              titleTask={titleTask}
+              handleSave={handleSave}
+              handleEdit={handleEdit}
+              edit={edit}
+              editValue={editValue}
+              setEditValue={setEditValue}
+              handleDelete={handleDelete}
+              displayDaysDiff={displayDaysDiff}
+              date={date}
+            />
+            <AccordionPanel
               as={Flex}
-              gap="22.5px"
-              px={0}
-              w="full"
-              _hover={{ bg: "transparent", cursor: "pointer" }}
+              flexDir="column"
+              gap="13px"
+              pb={4}
+              ml="20px"
             >
-              <Checkbox
-                colorScheme="gray"
-                onChange={() => setChecked(!checked)}
-              />
-              <Box
-                as="span"
-                flex="1"
-                textAlign="left"
-                fontFamily="lato"
-                color={checked ? COLORS.NEUTRAL : COLORS.SECONDARY}
-                fontSize="16px"
-                textDecoration={checked ? "line-through" : "none"}
-                fontWeight={600}
-              >
-                {titleTask}
-              </Box>
-              <Text fontFamily="lato" fontSize="14px" color={COLORS.RED}>
-                2 Days Left
-              </Text>
-              <Text fontFamily="lato" fontSize="14px">
-                {date}
-              </Text>
-              <AccordionIcon />
-            </AccordionButton>
-            <Flex px="20px" mr="10px">
-              <Menu placement="bottom-end">
-                <MenuButton>
-                  <Image src={ICONS.TRIPLE_DOTS} w="16px" alt="actions" />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem color={COLORS.RED} _hover={{ bg: "transparent" }}>
-                    Delete
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Flex>
-          </Flex>
-
-          <AccordionPanel
-            as={Flex}
-            flexDir="column"
-            gap="13px"
-            pb={4}
-            ml="20px"
-          >
-            <Flex gap="23.57px" alignItems="center">
-              <Image
-                src={ICONS.CLOCK_BLUE}
-                w="20px"
-                h="20px"
-                alt="clock-icons"
-              />
-              <Flex w="193px" h="40px">
-                <InputField
-                  id="date"
-                  name="date"
-                  type="date"
-                  borderColor={COLORS.SLATE}
+              <Flex gap="23.57px" alignItems="center">
+                <Image
+                  src={ICONS.CLOCK_BLUE}
+                  w="20px"
+                  h="20px"
+                  alt="clock-icons"
                 />
+                <Flex w="193px" h="40px">
+                  <InputField
+                    id="date"
+                    name="date"
+                    type="date"
+                    borderColor={COLORS.SLATE}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSave("date");
+                      }
+                    }}
+                  />
+                </Flex>
               </Flex>
-            </Flex>
 
-            <Flex maxW="518px" gap="23.57px" alignItems="center">
-              <Image
-                src={ICONS.PENCIL_BLUE}
-                w="20px"
-                h="20px"
-                alt="pencil-icons"
-                cursor="pointer"
-                onClick={() => handleEdit()}
-              />
-
-              {editDesc ? (
-                <Textarea
-                  ref={textareaRef}
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleSave();
-                    }
-                  }}
+              <Flex maxW="518px" gap="23.57px" alignItems="center">
+                <Image
+                  src={ICONS.PENCIL_BLUE}
+                  w="20px"
+                  h="20px"
+                  alt="pencil-icons"
+                  cursor="pointer"
+                  onClick={() => handleEdit("description")}
                 />
-              ) : (
-                <Text
-                  fontFamily="lato"
-                  fontSize="14px"
-                  color={COLORS.SECONDARY}
-                >
-                  {editValue ? editValue : editDesc}
-                </Text>
-              )}
-            </Flex>
 
-            {/* label tags */}
-            <Flex
-              gap="23.57px"
-              alignItems="center"
-              bg="#F9F9F9"
-              py="14px"
-              pl="12px"
-              ml="-12px"
-              rounded="10px"
-            >
-              <BadgeList />
+                {edit.description ? (
+                  <Textarea
+                    ref={textareaRef}
+                    value={editValue.description}
+                    maxLength={200}
+                    onChange={(e) =>
+                      setEditValue({
+                        ...editValue,
+                        description: e.target.value,
+                      })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSave("description");
+                      }
+                    }}
+                  />
+                ) : (
+                  <Text
+                    fontFamily="lato"
+                    fontSize="14px"
+                    color={COLORS.SECONDARY}
+                    noOfLines={2}
+                    w="333px"
+                  >
+                    {editValue.description
+                      ? editValue.description
+                      : edit.description}
+                  </Text>
+                )}
+              </Flex>
 
-              <Text
-                 h="28px"
-                py="2px"
-                px="12px"
-                rounded="5px"
-                bg={STICKERS_COLORS.GREEN}
-                fontFamily="lato"
-                fontWeight={600}
-              >
-                Client Related
-              </Text>
-            </Flex>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
-    </Flex>
+              {/* label tags */}
+              <TaskTags
+                handleAddTag={handleAddTag}
+                onOpen={onOpen}
+                onClose={onClose}
+                selectedTags={selectedTags}
+                isOpen={isOpen}
+                deleteTag={deleteTag}
+              />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Flex>
+    </FormProvider>
   );
 };
 
