@@ -12,8 +12,8 @@ const SectionLoader: React.FC<{ loadingText?: string }> = ({ loadingText }) => {
       gap="12.7px"
     >
       <Spinner
-        w="70.41px"
-        h="70.41px"
+        w="60.41px"
+        h="60.41px"
         thickness="8px"
         speed="0.65s"
         rounded="full"

@@ -1,0 +1,42 @@
+[
+    {
+      "id": 1,
+      "text": "Important ASAP",
+      "value": "important-asap"
+    },
+    {
+      "id": 2,
+      "text": "Offline Meeting",
+      "value": "offline-meeting"
+    },
+    {
+      "id": 3,
+      "text": "Virtual Meeting",
+      "value": "virtual-meeting"
+    },
+    {
+      "id": 4,
+      "text": "ASAP",
+      "value": "asap"
+    },
+    {
+      "id": 5,
+      "text": "Client Related",
+      "value": "client-related"
+    },
+    {
+      "id": 6,
+      "text": "Self Task",
+      "value": "self-task"
+    },
+    {
+      "id": 7,
+      "text": "Appoinment",
+      "value": "appoinment"
+    },
+    {
+      "id": 8,
+      "text": "Court Related",
+      "value": "court-related"
+    }
+  ]

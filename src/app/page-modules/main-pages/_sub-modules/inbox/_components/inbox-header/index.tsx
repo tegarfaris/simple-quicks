@@ -4,13 +4,13 @@ import { BORDER, COLORS } from "@simple-quicks/theme/theme.utility";
 import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const Inboxheader: React.FC<{
-  senderName: string;
+  senderName?: string;
   totalParticipant: number;
   onClose: () => void;
 }> = ({ senderName, totalParticipant, onClose }) => {
   return (
-    <Flex flexDir="column">
-      <Flex gap="13px" pb="18.44px">
+    <Flex w="full" flexDir="column">
+      <Flex p="20px" gap="13px">
         <Image
           src={ICONS.ARROW_BACK}
           cursor="pointer"
@@ -34,7 +34,7 @@ const Inboxheader: React.FC<{
           </Text>
         </Box>
       </Flex>
-      <Divider w="734px" mx="-32px" color={BORDER.DEFAULT} />
+      <Divider w="full" color={BORDER.DEFAULT} />
     </Flex>
   );
 };

@@ -1,95 +1,117 @@
-import React from "react";
-import { Box, Divider, Flex, Image } from "@chakra-ui/react";
+import React, { Dispatch, SetStateAction } from "react";
+import { Divider, Flex, Text } from "@chakra-ui/react";
 import InboxItem from "../../_components/inbox-item";
 import InboxDetail from "../inbox-detail";
 import { BORDER } from "@simple-quicks/theme/theme.utility";
-import InputField from "@simple-quicks/app/components/input/input-field";
-import { ICONS } from "@simple-quicks/app/helper/icons.helper";
-
-const DATA_MESSAGE = [
-  {
-    id: 0,
-    messageName: "109220-Naturalization",
-    date: "January 1,2021 19:10",
-    senderName: "Cameron Phillips :",
-    bodyMessage: "Please check this out!",
-    read: false,
-  },
-  {
-    id: 1,
-    messageName:
-      "Jeannette Moraima Guaman Chamba (Hutto I-589) [ Hutto Follow Up - Brief Service ]",
-    date: "02/06/2021 10:45",
-    senderName: "Ellen :",
-    bodyMessage: "Hey, please read.",
-    read: true,
-  },
-  {
-    id: 2,
-    messageName: "8405-Diana SALAZAR MUNGUIA",
-    date: "01/06/2021 12:19",
-    senderName: "Cameron Phillips :",
-    bodyMessage:
-      "I understand your initial concerns and thats very valid, Elizabeth. But you ...",
-    read: true,
-  },
-];
+import {
+  IInbox,
+  IMessages,
+  IParamsGetInbox,
+} from "@simple-quicks/app/interface/inbox.interface";
+import SectionLoader from "@simple-quicks/app/page-modules/main-pages/_components/section-loader";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import dayjs from "dayjs";
+import useInbox from "@simple-quicks/app/hooks/api/useInbox";
 
 interface InboxListProps {
-  selectedMessageId: number | null;
-  openInbox: (id: number) => void;
-  closeInbox: () => void;
+  selectedMessageId: string | null;
+  paramsInbox: IParamsGetInbox;
+  setParamsInbox: Dispatch<SetStateAction<IParamsGetInbox | undefined>>;
+  inboxList: IInbox[];
+  openInbox: (id: string) => void;
+  pending: boolean;
+  success: boolean;
+  isEmpty: boolean;
+  onCloseDetail: () => void;
 }
 const InboxList: React.FC<InboxListProps> = ({
   selectedMessageId,
+  inboxList,
   openInbox,
-  closeInbox,
+  pending,
+  isEmpty,
+  onCloseDetail,
 }) => {
-  const [search, setSearch] = React.useState<string>("");
+  const { sendMessage } = useInbox();
+  const methods = useForm();
 
-  const filteredData = DATA_MESSAGE.filter(
-    (a) =>
-      a.messageName.toLowerCase().includes(search.toLowerCase()) ||
-      a.senderName.toLowerCase().includes(search.toLowerCase())
-  );
+  const { reset } = methods;
 
+  const send: SubmitHandler<IMessages> = (data) => {
+    if (selectedMessageId) {
+      sendMessage({
+        id: selectedMessageId,
+        isSender: true,
+        isRead: true,
+        senderName: "Tegar Faris Nurhakim",
+        bodyChat: data.bodyChat,
+        createdAt: dayjs().format("YYYY-MM-DD"),
+      });
+      reset({ bodyChat: "" });
+    }
+  };
+
+  if (pending) {
+    return <SectionLoader />;
+  }
+
+  //  i create this condition because on mockapi.io when data not matching with keyword search they didn't return an empty array or null, but 404, so I made this because I set isEmpty on state rejected.
+  if (isEmpty) {
+    return (
+      <Flex w="full" h="full" justifyContent="center" alignItems="center">
+        <Text>Oops... Inbox is empty !</Text>
+      </Flex>
+    );
+  }
   return (
-    <Flex flexDir="column">
-      <Box display={selectedMessageId === null ? "initial" : "none"}>
-        {/* header */}
-        <InputField
-          id="search"
-          name="search"
-          placeholder="Search"
-          required
-          type="text"
-          rightElement={
-            <Image src={ICONS.SEARCH_BLACK} w="20px" alt="search-icons" />
-          }
-          pl="58.82px"
-          onChange={(e) => setSearch(e.currentTarget.value)}
-        />
-      </Box>
+    <Flex w="full" flexDir="column">
       <Flex
         display={selectedMessageId === null ? "flex" : "none"}
         flexDir="column"
       >
-        {filteredData.map((message) => (
-          <>
-            <InboxItem
-              key={message.id}
-              messageName={message.messageName}
-              date={message.date}
-              senderName={message.senderName}
-              bodyMessage={message.bodyMessage}
-              read={message.read}
-              onClick={() => openInbox(message.id)}
-            />
-            <Divider borderColor={BORDER.DEFAULT} />
-          </>
-        ))}
+        {inboxList ? (
+          inboxList.map((inbox) => (
+            <>
+              <InboxItem
+                key={inbox.id}
+                messageName={inbox.titleMessage}
+                date={inbox.date}
+                senderName={
+                  inbox.messages[inbox?.messages.length - 1].senderName
+                }
+                bodyMessage={
+                  inbox.messages[inbox?.messages.length - 1].bodyChat
+                }
+                read={
+                  inbox.messages[inbox?.messages.length - 1].isRead as boolean
+                }
+                onClick={() => openInbox(inbox.id)}
+              />
+              <Divider borderColor={BORDER.DEFAULT} />
+            </>
+          ))
+        ) : (
+          <Flex w="full" h="full" justifyContent="center" alignItems="center">
+            <Text>Oops... Inbox is empty !</Text>
+          </Flex>
+        )}
       </Flex>
-      {selectedMessageId !== null && <InboxDetail />}
+
+      <FormProvider {...methods}>
+        {selectedMessageId !== null && (
+          <InboxDetail
+            selectedMessageId={selectedMessageId}
+            onCloseDetail={onCloseDetail}
+            send={send as SubmitHandler<FieldValues>}
+            pending={pending}
+          />
+        )}
+      </FormProvider>
     </Flex>
   );
 };

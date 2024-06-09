@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import AvatarGroup from "@simple-quicks/app/page-modules/main-pages/_components/avatar-group";
 import { COLORS, INDICATORS } from "@simple-quicks/theme/theme.utility";
+import useInbox from "@simple-quicks/app/hooks/api/useInbox";
 
 interface InboxItemProps {
   messageName: string;
@@ -32,7 +33,6 @@ const InboxItem: React.FC<InboxItemProps> = ({
         {/* avatar section */}
         <AvatarGroup />
 
-        {/* message name */}
         <Box>
           <Flex gap="16px">
             <Text
@@ -49,9 +49,9 @@ const InboxItem: React.FC<InboxItemProps> = ({
             </Text>
           </Flex>
           <Text fontFamily="lato" fontWeight={700} fontSize="14px">
-            {senderName}
+            {senderName}:
           </Text>
-          <Text fontFamily="lato" fontSize="14px" noOfLines={1}>
+          <Text fontFamily="lato" w="450px" fontSize="14px" noOfLines={1}>
             {bodyMessage}
           </Text>
         </Box>

@@ -28,8 +28,8 @@ const TaskPopQuicks: React.FC<{
       <Flex
         pos="initial"
         flexDir="column"
-        minW="734px"
-        h="637px"
+        minW="634px"
+        h="600px"
         overflowX="hidden"
         bg="white"
         borderRadius="10px"
