@@ -13,8 +13,14 @@ import { ICONS } from "@simple-quicks/app/helper/icons.helper";
 
 const InboxSection: React.FC = () => {
   const methods = useForm({});
-  const { inboxList, getInboxList, inboxIsEmpty, inboxPending, inboxSuccess } =
-    useInbox();
+  const {
+    inboxList,
+    getInboxList,
+    inboxIsEmpty,
+    inboxPending,
+    inboxSuccess,
+    refetchMessage,
+  } = useInbox();
   const [paramsInbox, setParamsInbox] = React.useState<IParamsGetInbox>();
   const [selectedMessageId, setSelectedMessageId] = React.useState<
     string | null

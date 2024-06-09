@@ -60,6 +60,7 @@ const InboxList: React.FC<InboxListProps> = ({
     return <SectionLoader />;
   }
 
+  //  i create this condition because on mockapi.io when data not matching with keyword search they didn't return an empty array or null, but 404, so I made this because I set isEmpty on state rejected.
   if (isEmpty) {
     return (
       <Flex w="full" h="full" justifyContent="center" alignItems="center">
@@ -73,20 +74,32 @@ const InboxList: React.FC<InboxListProps> = ({
         display={selectedMessageId === null ? "flex" : "none"}
         flexDir="column"
       >
-        {inboxList?.map((inbox) => (
-          <>
-            <InboxItem
-              key={inbox.id}
-              messageName={inbox.titleMessage}
-              date={inbox.date}
-              senderName={inbox.messages[0].senderName}
-              bodyMessage={inbox.messages[0].bodyChat}
-              read={inbox.messages[0].isRead as boolean}
-              onClick={() => openInbox(inbox.id)}
-            />
-            <Divider borderColor={BORDER.DEFAULT} />
-          </>
-        ))}
+        {inboxList ? (
+          inboxList.map((inbox) => (
+            <>
+              <InboxItem
+                key={inbox.id}
+                messageName={inbox.titleMessage}
+                date={inbox.date}
+                senderName={
+                  inbox.messages[inbox?.messages.length - 1].senderName
+                }
+                bodyMessage={
+                  inbox.messages[inbox?.messages.length - 1].bodyChat
+                }
+                read={
+                  inbox.messages[inbox?.messages.length - 1].isRead as boolean
+                }
+                onClick={() => openInbox(inbox.id)}
+              />
+              <Divider borderColor={BORDER.DEFAULT} />
+            </>
+          ))
+        ) : (
+          <Flex w="full" h="full" justifyContent="center" alignItems="center">
+            <Text>Oops... Inbox is empty !</Text>
+          </Flex>
+        )}
       </Flex>
 
       <FormProvider {...methods}>

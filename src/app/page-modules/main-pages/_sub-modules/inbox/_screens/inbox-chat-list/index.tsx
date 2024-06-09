@@ -1,10 +1,18 @@
 import React from "react";
-import { AbsoluteCenter, Box, Divider, Flex, Spinner } from "@chakra-ui/react";
+import {
+  AbsoluteCenter,
+  Box,
+  ButtonGroup,
+  Divider,
+  Flex,
+  Spinner,
+} from "@chakra-ui/react";
 import InboxBubbleChat from "../../_components/inbox-bubble-chat";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
 import { IMessages } from "@simple-quicks/app/interface/inbox.interface";
 import dayjs from "dayjs";
 import SectionLoader from "@simple-quicks/app/page-modules/main-pages/_components/section-loader";
+import useInbox from "@simple-quicks/app/hooks/api/useInbox";
 
 interface InboxChatListProps {
   messageList: IMessages[];
@@ -14,8 +22,26 @@ const InboxChatList: React.FC<InboxChatListProps> = ({
   messageList,
   selectedMessageId,
 }) => {
+  const { editMessage } = useInbox();
+  const newMessage = messageList?.[messageList.length - 1];
   let hasRenderedTodayDivider = false;
   let hasNewDivider = false;
+
+  React.useEffect(() => {
+    if (selectedMessageId && newMessage?.id) {
+      editMessage({
+        data: {
+          id: newMessage?.id,
+          senderName: newMessage?.senderName,
+          bodyChat: newMessage?.bodyChat,
+          createdAt: newMessage?.createdAt,
+          isSender: newMessage?.isSender,
+          isRead: true,
+        },
+        inboxId: selectedMessageId,
+      });
+    }
+  }, []);
 
   return (
     <Flex w="full" flexDir="column" gap="33.34px">
