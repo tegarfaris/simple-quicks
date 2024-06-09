@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Flex, Box, useDisclosure } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import ButtonCircle from "@simple-quicks/app/components/button-circle";
 import { COLORS } from "@simple-quicks/theme/theme.utility";
@@ -11,7 +11,7 @@ const MotionFlex = motion(Flex);
 
 const MainPages: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { isOpen, onToggle } = useDisclosure();
+  const { onToggle } = useDisclosure();
   const [openQuicks, setOpenQuicks] = useState({
     task: false,
     inbox: false,

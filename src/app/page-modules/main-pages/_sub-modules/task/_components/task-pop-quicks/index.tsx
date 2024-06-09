@@ -1,8 +1,5 @@
 import React from "react";
-import { Button, Flex, Select } from "@chakra-ui/react";
-import InputField from "@simple-quicks/app/components/input/input-field";
-import { COLORS } from "@simple-quicks/theme/theme.utility";
-import TaskHeader from "../task-header";
+import { Flex } from "@chakra-ui/react";
 
 const TaskPopQuicks: React.FC<{
   children: React.ReactNode;

@@ -8,7 +8,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Spinner,
   Text,
   Textarea,
 } from "@chakra-ui/react";
@@ -123,14 +122,6 @@ const InboxBubbleChat: React.FC<InboxBubbleChatProps> = ({
           )}
           <Flex alignItems="center" gap="10px">
             <Text>{dayjs(time).format("HH:mm")}</Text>
-            <Text
-              fontFamily="lato"
-              fontSize="12px"
-              fontWeight={600}
-              color={COLORS.NEUTRAL}
-            >
-              {isEdited && "Edited"}
-            </Text>
           </Flex>
         </Box>
         <Menu>

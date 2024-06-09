@@ -4,7 +4,6 @@ import TaskAccordionItem from "../../_components/task-accordion-item";
 import TaskHeader from "../../_components/task-header";
 import useTask from "@simple-quicks/app/hooks/api/useTask";
 import SectionLoader from "@simple-quicks/app/page-modules/main-pages/_components/section-loader";
-import { FormProvider, useForm } from "react-hook-form";
 import {
   EBadge,
   IParamsTask,
@@ -17,7 +16,7 @@ const TaskList: React.FC = () => {
   React.useEffect(() => {
     getTaskList({ order: "desc", filter: params?.filter });
   }, [getTaskList, refetch, params?.filter]);
-  console.log("DATA: ", taskList);
+
   return (
     <Flex flexDir="column" w="full" mt="70px" h="full">
       <Flex
@@ -43,7 +42,7 @@ const TaskList: React.FC = () => {
         alignItems="center"
         display={taskPending ? "flex" : "none"}
       >
-        <SectionLoader />
+        <SectionLoader loadingText="Loading Task ..." />
       </Flex>
 
       <Flex
